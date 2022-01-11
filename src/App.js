@@ -39,6 +39,8 @@ class App extends React.Component {
     //     .catch((err) => {
     //       console.error(err);
     //     });
+    // } else {
+    //   console.log("Follower length", this.state.followers.length);
     // }
   }
 

@@ -5,13 +5,13 @@ class FollowerList extends React.Component {
   render() {
     const { followers } = this.props;
     // Map the Followers
-
+    const followArr = followers.map((follower) => {
+      return <Follower follower={follower} />;
+    });
     return (
       <div>
         <h2>Followers:</h2>
-        <div>
-          <Follower />
-        </div>
+        <div>{followArr}</div>
       </div>
     );
   }
