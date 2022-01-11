@@ -4,6 +4,33 @@ import FollowerList from "./components/FollowerList";
 import axios from "axios";
 import styled from "styled-components";
 
+const AppContainer = styled.main`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid red;
+
+  input {
+    font-size: 1.2rem;
+    width: 20rem;
+  }
+
+  button {
+    padding: 0.4rem;
+    border-radius: 10px;
+    margin-left: 0.8rem;
+    font-size: 1rem;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: gray;
+  }
+`;
+
 // const userData = {
 //   login: "brettsmith212",
 //   avatar_url: "https://avatars.githubusercontent.com/u/67445684?v=4",
@@ -28,8 +55,13 @@ import styled from "styled-components";
 
 class App extends React.Component {
   state = {
-    user: "brettsmith212",
-    userInfo: {},
+    user: "",
+    userInfo: {
+      login: "",
+      avatar_url: "",
+      followers: 0,
+      public_repos: 0,
+    },
     followers: [],
     // userInfo: userData,
     // followers: followerData,
@@ -37,9 +69,9 @@ class App extends React.Component {
 
   componentDidMount() {
     axios
-      .get(`https://api.github.com/users/${this.state.user}`)
+      .get(`https://api.github.com/users/brettsmith212`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.setState({
           ...this.state,
           userInfo: res.data,
@@ -51,11 +83,13 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.user !== this.state.user) {
+    if (prevState.userInfo.login !== this.state.userInfo.login) {
       axios
-        .get(`https://api.github.com/users/${this.state.user}/followers`)
+        .get(
+          `https://api.github.com/users/${this.state.userInfo.login}/followers`
+        )
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.setState({
             ...this.state,
             followers: [...res.data],
@@ -64,10 +98,6 @@ class App extends React.Component {
         .catch((err) => {
           console.error(err);
         });
-      this.setState({
-        ...this.state,
-        user: "",
-      });
     }
   }
 
@@ -82,7 +112,7 @@ class App extends React.Component {
     axios
       .get(`https://api.github.com/users/${this.state.user}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.setState({
           ...this.state,
           userInfo: res.data,
@@ -91,28 +121,34 @@ class App extends React.Component {
       .catch((err) => {
         console.error(err);
       });
+    this.setState({
+      ...this.state,
+      user: "",
+    });
   };
 
   render() {
-    console.log("USERINFO: ", this.state.userInfo);
-    console.log("FOLLOWERS: ", this.state.followers);
-    console.log("USER: ", this.state.user);
+    // console.log("USERINFO: ", this.state.userInfo);
+    // console.log("FOLLOWERS: ", this.state.followers);
+    // console.log("USER: ", this.state.user);
     return (
-      <div>
-        <h1>GitHub Info</h1>
-        <input
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.user}
-        />
-        <button onClick={this.handleSearch}>Search</button>
+      <AppContainer>
+        <div>
+          <h1>GitHub Info</h1>
+          <input
+            type="text"
+            onChange={this.handleChange}
+            value={this.state.user}
+          />
+          <button onClick={this.handleSearch}>Search</button>
+        </div>
         <div>
           <User userInfo={this.state.userInfo} />
         </div>
         <div>
           <FollowerList followers={this.state.followers} />
         </div>
-      </div>
+      </AppContainer>
     );
   }
 }
