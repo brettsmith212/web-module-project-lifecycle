@@ -11,34 +11,48 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    axios
-      .get("https://api.github.com/users/brettsmith212")
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // axios
+    //   .get("https://api.github.com/users/brettsmith212")
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     this.setState({
+    //       ...this.state,
+    //       userInfo: res.data,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
+  }
 
-    axios
-      .get("https://api.github.com/users/brettsmith212/followers")
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  componentDidUpdate() {
+    // if (this.state.followers.length === 0) {
+    //   axios
+    //     .get("https://api.github.com/users/brettsmith212/followers")
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.setState({
+    //         ...this.state,
+    //         followers: [...res.data],
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // }
   }
 
   render() {
+    console.log("USERINFO: ", this.state.userInfo);
+    console.log("FOLLOWERS: ", this.state.followers);
     return (
       <div>
         Github Card
         <div>
-          <User />
+          <User userInfo={this.state.userInfo} />
         </div>
         <div>
-          <FollowerList />
+          <FollowerList followers={this.state.followers} />
         </div>
       </div>
     );
